@@ -1,4 +1,4 @@
-package com.rinha.rinha.domain.conta;
+package com.rinha.rinha.domain.cliente;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -6,13 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "tb_conta")
-@Entity(name = "conta")
+@Table(name = "tb_clientes")
+@Entity(name = "cliente")
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Conta {
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +20,9 @@ public class Conta {
     private Long saldo;
     private Long limite;
 
-    public Conta(ContaResponse contaResponse) {
-        this.saldo = contaResponse.saldo();
-        this.limite = contaResponse.limite();
+    public Cliente(ClienteResponse clienteResponse) {
+        this.saldo = clienteResponse.saldo();
+        this.limite = clienteResponse.limite();
     }
 
 }

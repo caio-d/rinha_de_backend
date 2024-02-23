@@ -1,6 +1,5 @@
 package com.rinha.rinha.services;
 
-import com.rinha.rinha.domain.conta.Conta;
 import com.rinha.rinha.domain.transacao.Transacao;
 import com.rinha.rinha.repositories.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

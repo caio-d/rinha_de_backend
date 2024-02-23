@@ -19,7 +19,7 @@ public class ClienteService {
     }
 
     public Optional<Cliente> findById(Long id) {
-        return this.repository.findById(id).map(Optional::of).orElseThrow();
+        return Optional.of(this.repository.findById(id).orElseThrow());
     }
 
     public List<Cliente> getAll() {

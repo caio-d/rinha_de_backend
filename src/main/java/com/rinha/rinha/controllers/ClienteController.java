@@ -1,9 +1,12 @@
 package com.rinha.rinha.controllers;
 
 import com.rinha.rinha.domain.cliente.Cliente;
+import com.rinha.rinha.domain.cliente.ClienteResponse;
 import com.rinha.rinha.domain.transacao.Transacao;
 import com.rinha.rinha.domain.transacao.TransacaoRequest;
 import com.rinha.rinha.services.ClienteService;
+import lombok.SneakyThrows;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +24,26 @@ public class ClienteController {
         this.service = clienteService;
     }
 
+    @SneakyThrows
     @PostMapping("/{clienteId}/transacoes")
-    public ResponseEntity<Cliente> insert(@PathVariable Long clienteId, @RequestBody TransacaoRequest transacaoRequest) {
+    public ResponseEntity<ClienteResponse> insert(@PathVariable Long clienteId, @RequestBody TransacaoRequest transacaoRequest) {
 
         Optional<Cliente> clienteOptional = service.findById(clienteId);
-        Cliente cliente = clienteOptional.orElseThrow(() -> new RuntimeException("Cliente não encontrado com o ID: " + clienteId));
+        Cliente cliente = clienteOptional.orElseThrow();
 
         Transacao transacao = new Transacao(transacaoRequest);
 
-        if (transacao.getValor() <= 0 || !transacao.getTipo().equals("c") || !transacao.getTipo().equals("d")) {
+        if (this.transacaoInvalida(transacao)) {
             return ResponseEntity.badRequest().build();
         }
 
-        return null;
+        return ResponseEntity.ok().body(new ClienteResponse(cliente));
+    }
+
+    public Boolean transacaoInvalida(Transacao transacao) {
+        return transacao.getValor() <= 0 ||
+                (!transacao.getTipo().equalsIgnoreCase("c") && !transacao.getTipo().equalsIgnoreCase("d")) ||
+                transacao.getDescricao().length() > 10;
     }
 
     @GetMapping

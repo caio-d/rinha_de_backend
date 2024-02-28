@@ -9,8 +9,8 @@ import com.rinha.rinha.services.TransacaoService;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/clientes")
@@ -42,7 +42,6 @@ public class ClienteController {
             cliente.setSaldo(cliente.getSaldo() - transacao.getValor());
         } else {
             cliente.setLimite(cliente.getLimite() - transacao.getValor());
-
         }
 
         clienteService.save(cliente);
@@ -63,27 +62,13 @@ public class ClienteController {
         long valorTransacao = transacao.getValor();
         long saldo = cliente.getSaldo();
         long limite = cliente.getLimite();
-        long limiteRestante;
+        long limiteRestante = limite + saldo;
 
         if (tipoTransacaoDebito) {
-
-            if (valorTransacao < 0) {
-                limiteRestante = limite - saldo;
-            } else {
-                limiteRestante = limite + saldo;
-            }
-
-            if (limiteRestante > valorTransacao) return false;
-
-            if (valorTransacao > saldo) return false;
-
-            if (valorTransacao > (saldo + limite)) return false;
-
+            return saldo < valorTransacao && limiteRestante < valorTransacao;
         } else {
-            if (valorTransacao > limite) return false;
+            return valorTransacao > limiteRestante || limite <= 0;
         }
-
-        return false;
     }
 
     @GetMapping

@@ -1,6 +1,5 @@
 package com.rinha.rinha.controllers;
 import com.rinha.rinha.domain.transacao.Transacao;
-import com.rinha.rinha.domain.transacao.TransacaoRequest;
 import com.rinha.rinha.services.TransacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

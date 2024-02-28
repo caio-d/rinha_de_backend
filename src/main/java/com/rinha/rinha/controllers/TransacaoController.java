@@ -21,6 +21,4 @@ public class TransacaoController {
     public ResponseEntity<List<Transacao>> getAll() {
         return ResponseEntity.ok().body(service.getAll());
     }
-
-
 }
